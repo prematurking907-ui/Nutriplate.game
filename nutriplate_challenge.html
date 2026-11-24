@@ -1,0 +1,1673 @@
+```html
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NutriPlate Challenge - NC SoulSpace • Herbalife Nutrition Coach</title>
+    <style>
+        /* =========================================================
+           1. DESIGN TOKENS & RESET CSS MANDIRI (TANPA CDN EKSTERNAL)
+           ========================================================= */
+        :root {
+            --bg-gradient: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 45%, #fefce8 100%);
+            --surface-card: #ffffff;
+            --surface-soft: #f0fdf4;
+            --surface-amber: #fffbeb;
+            --primary-green: #047857;
+            --primary-green-dark: #064e3b;
+            --primary-green-light: #10b981;
+            --accent-gold: #d97706;
+            --accent-gold-bright: #f59e0b;
+            --accent-gold-soft: #fef3c7;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --border-subtle: #cbd5e1;
+            --border-green: #a7f3d0;
+            --border-gold: #fcd34d;
+            --danger-red: #dc2626;
+            --shadow-card: 0 12px 30px -8px rgba(6, 78, 59, 0.14);
+            --radius-xl: 22px;
+            --radius-lg: 16px;
+            --radius-md: 12px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background: var(--bg-gradient);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            line-height: 1.5;
+            overflow-x: hidden;
+        }
+
+        /* =========================================================
+           2. ANIMASI RINGAN & INTERAKTIF
+           ========================================================= */
+        @keyframes popIn {
+            0% { transform: scale(0.85); opacity: 0; }
+            70% { transform: scale(1.03); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes pulseGentle {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+        }
+
+        @keyframes shakeAlert {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-6px); }
+            75% { transform: translateX(6px); }
+        }
+
+        .anim-pop {
+            animation: popIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        .anim-shake {
+            animation: shakeAlert 0.3s ease-in-out;
+        }
+
+        /* =========================================================
+           3. HEADER & NAVIGASI ATAS
+           ========================================================= */
+        .app-header {
+            width: 100%;
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 16px 16px 8px 16px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .brand-box {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, var(--primary-green-dark), var(--primary-green-light));
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: 0 6px 14px rgba(4, 120, 87, 0.25);
+            border: 2px solid var(--border-gold);
+            flex-shrink: 0;
+        }
+
+        .brand-tagline {
+            display: inline-block;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.4px;
+            text-transform: uppercase;
+            color: var(--primary-green-dark);
+            background: var(--accent-gold-soft);
+            border: 1px solid var(--border-gold);
+            padding: 2px 10px;
+            border-radius: 999px;
+            margin-bottom: 3px;
+        }
+
+        .brand-title {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--primary-green-dark);
+            line-height: 1.15;
+        }
+
+        .brand-title span {
+            color: var(--accent-gold);
+        }
+
+        .brand-subtitle {
+            font-size: 12px;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-pill {
+            border: 1px solid var(--border-green);
+            background: #ffffff;
+            color: var(--primary-green-dark);
+            font-weight: 700;
+            font-size: 12px;
+            padding: 9px 14px;
+            border-radius: 999px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            transition: transform 0.15s ease, background 0.15s ease;
+        }
+
+        .btn-pill:hover {
+            background: var(--surface-soft);
+            transform: translateY(-1px);
+        }
+
+        .btn-pill-gold {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border-color: var(--accent-gold-bright);
+            color: #78350f;
+        }
+
+        /* =========================================================
+           4. KONTAINER UTAMA & PANEL SCREEN
+           ========================================================= */
+        .main-container {
+            width: 100%;
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 8px 16px 24px 16px;
+            flex: 1;
+        }
+
+        .card-panel {
+            background: var(--surface-card);
+            border-radius: var(--radius-xl);
+            padding: 22px;
+            box-shadow: var(--shadow-card);
+            border: 1px solid var(--border-green);
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* =========================================================
+           5. LAYAR AWAL (START SCREEN)
+           ========================================================= */
+        .hero-box {
+            text-align: center;
+            max-width: 680px;
+            margin: 0 auto;
+        }
+
+        .hero-emoji {
+            font-size: 52px;
+            margin-bottom: 8px;
+            display: inline-block;
+            animation: pulseGentle 2.8s infinite ease-in-out;
+        }
+
+        .hero-heading {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--primary-green-dark);
+            margin-bottom: 10px;
+        }
+
+        .hero-desc {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 18px;
+        }
+
+        .round-preview-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 18px;
+            text-align: left;
+        }
+
+        .round-preview-item {
+            background: var(--surface-soft);
+            border: 1px solid var(--border-green);
+            border-radius: var(--radius-lg);
+            padding: 12px;
+        }
+
+        .round-preview-item strong {
+            display: block;
+            font-size: 12px;
+            color: var(--primary-green-dark);
+            margin-bottom: 3px;
+        }
+
+        .round-preview-item span {
+            font-size: 11px;
+            color: var(--text-muted);
+            display: block;
+            line-height: 1.35;
+        }
+
+        .coach-banner-mini {
+            background: linear-gradient(90deg, #ecfdf5, #fffbeb);
+            border: 1.5px solid var(--border-gold);
+            border-radius: var(--radius-lg);
+            padding: 12px 14px;
+            margin-bottom: 20px;
+            font-size: 12px;
+            color: var(--primary-green-dark);
+            font-weight: 600;
+        }
+
+        .btn-primary-large {
+            width: 100%;
+            max-width: 340px;
+            padding: 15px 24px;
+            border: none;
+            border-bottom: 4px solid var(--primary-green-dark);
+            border-radius: var(--radius-lg);
+            background: linear-gradient(135deg, var(--primary-green), var(--primary-green-light));
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 10px 20px -6px rgba(4, 120, 87, 0.4);
+            transition: transform 0.15s ease, filter 0.15s ease;
+        }
+
+        .btn-primary-large:hover {
+            filter: brightness(1.05);
+            transform: translateY(-2px);
+        }
+
+        .btn-primary-large:active {
+            transform: translateY(1px);
+        }
+
+        /* =========================================================
+           6. LAYAR BERMAIN (GAMEPLAY)
+           ========================================================= */
+        .hud-bar {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .hud-box {
+            background: #ffffff;
+            border: 1px solid var(--border-green);
+            border-radius: var(--radius-md);
+            padding: 10px;
+            text-align: center;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.04);
+        }
+
+        .hud-label {
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            letter-spacing: 0.5px;
+        }
+
+        .hud-value {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--primary-green-dark);
+        }
+
+        .mission-card {
+            background: linear-gradient(135deg, var(--primary-green-dark), var(--primary-green));
+            color: #ffffff;
+            border-radius: var(--radius-lg);
+            padding: 14px 16px;
+            margin-bottom: 12px;
+            border: 2px solid var(--border-gold);
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .mission-badge {
+            display: inline-block;
+            background: var(--accent-gold-bright);
+            color: var(--primary-green-dark);
+            font-size: 11px;
+            font-weight: 800;
+            padding: 2px 10px;
+            border-radius: 999px;
+            margin-bottom: 4px;
+        }
+
+        .mission-title {
+            font-size: 16px;
+            font-weight: 800;
+            margin-bottom: 2px;
+        }
+
+        .mission-target {
+            font-size: 12px;
+            color: #d1fae5;
+        }
+
+        /* 4 Bar Progres Real-Time */
+        .progress-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            background: #ffffff;
+            border: 1px solid var(--border-green);
+            border-radius: var(--radius-lg);
+            padding: 12px;
+            margin-bottom: 14px;
+        }
+
+        .prog-item-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            font-weight: 800;
+            margin-bottom: 5px;
+            color: var(--text-main);
+        }
+
+        .prog-track {
+            width: 100%;
+            height: 9px;
+            background: #e2e8f0;
+            border-radius: 999px;
+            overflow: hidden;
+        }
+
+        .prog-fill {
+            height: 100%;
+            width: 0%;
+            border-radius: 999px;
+            transition: width 0.3s ease;
+        }
+
+        .fill-protein { background: #f59e0b; }
+        .fill-fiber { background: #10b981; }
+        .fill-fat { background: #8b5cf6; }
+        .fill-hydration { background: #0ea5e9; }
+
+        /* Grid Utama Gameplay: Piring di Kiri, Kartu Pilihan di Kanan */
+        .play-arena {
+            display: grid;
+            grid-template-columns: 1fr 1.15fr;
+            gap: 16px;
+            align-items: start;
+        }
+
+        .plate-stage {
+            background: #ffffff;
+            border: 1px solid var(--border-green);
+            border-radius: var(--radius-xl);
+            padding: 16px;
+            text-align: center;
+            box-shadow: var(--shadow-card);
+        }
+
+        .plate-circle {
+            width: 240px;
+            height: 240px;
+            margin: 6px auto 14px auto;
+            border-radius: 50%;
+            background: radial-gradient(circle, #ffffff 62%, #f1f5f9 100%);
+            border: 6px solid #ffffff;
+            box-shadow:
+                0 0 0 4px var(--accent-gold-bright),
+                0 14px 28px rgba(6, 78, 59, 0.16),
+                inset 0 4px 12px rgba(0, 0, 0, 0.06);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            gap: 8px;
+            padding: 20px;
+            position: relative;
+        }
+
+        .plate-slot {
+            border-radius: 16px;
+            border: 2px dashed #cbd5e1;
+            background: #f8fafc;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            overflow: hidden;
+        }
+
+        .plate-slot.filled {
+            border: 2px solid var(--primary-green);
+            background: var(--surface-soft);
+            box-shadow: 0 3px 8px rgba(4, 120, 87, 0.12);
+        }
+
+        .plate-slot.filled:hover {
+            background: #fee2e2;
+            border-color: var(--danger-red);
+        }
+
+        .slot-emoji {
+            font-size: 26px;
+            line-height: 1.1;
+        }
+
+        .slot-name {
+            font-size: 10px;
+            font-weight: 800;
+            color: var(--primary-green-dark);
+            margin-top: 3px;
+            line-height: 1.15;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .slot-empty-text {
+            font-size: 10px;
+            font-weight: 700;
+            color: #94a3b8;
+        }
+
+        .feedback-box {
+            background: var(--surface-amber);
+            border: 1px solid var(--border-gold);
+            border-radius: var(--radius-md);
+            padding: 10px 12px;
+            font-size: 12px;
+            color: #78350f;
+            font-weight: 600;
+            min-height: 54px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 12px;
+        }
+
+        .plate-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1.6fr;
+            gap: 8px;
+        }
+
+        .btn-reset {
+            padding: 12px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-subtle);
+            background: #f1f5f9;
+            color: var(--text-main);
+            font-weight: 800;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        .btn-reset:hover {
+            background: #e2e8f0;
+        }
+
+        .btn-serve {
+            padding: 12px;
+            border-radius: var(--radius-md);
+            border: none;
+            border-bottom: 3px solid #b45309;
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            color: var(--primary-green-dark);
+            font-weight: 800;
+            font-size: 13px;
+            cursor: pointer;
+            box-shadow: 0 6px 14px rgba(245, 158, 11, 0.3);
+            transition: transform 0.15s ease;
+        }
+
+        .btn-serve:disabled {
+            background: #e2e8f0;
+            border-bottom-color: #cbd5e1;
+            color: #94a3b8;
+            box-shadow: none;
+            cursor: not-allowed;
+        }
+
+        /* Daftar Kartu Pilihan Bahan Makanan */
+        .food-deck {
+            background: #ffffff;
+            border: 1px solid var(--border-green);
+            border-radius: var(--radius-xl);
+            padding: 16px;
+            box-shadow: var(--shadow-card);
+        }
+
+        .deck-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .deck-title {
+            font-size: 14px;
+            font-weight: 800;
+            color: var(--primary-green-dark);
+        }
+
+        .deck-hint {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--accent-gold);
+        }
+
+        .food-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+        }
+
+        .food-card {
+            background: #ffffff;
+            border: 1.5px solid #e2e8f0;
+            border-radius: var(--radius-md);
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .food-card:hover {
+            border-color: var(--primary-green-light);
+            background: var(--surface-soft);
+            transform: translateY(-1px);
+        }
+
+        .food-card.herbalife-card {
+            background: linear-gradient(135deg, #f0fdf4, #fffbeb);
+            border-color: var(--border-gold);
+        }
+
+        .food-card.selected {
+            border-color: var(--primary-green);
+            background: #d1fae5;
+            box-shadow: inset 0 0 0 1px var(--primary-green);
+        }
+
+        .food-emoji {
+            font-size: 26px;
+            flex-shrink: 0;
+        }
+
+        .food-info-title {
+            font-size: 12px;
+            font-weight: 800;
+            color: var(--text-main);
+            line-height: 1.25;
+        }
+
+        .food-info-tag {
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--primary-green);
+            margin-top: 2px;
+        }
+
+        .food-card.herbalife-card .food-info-tag {
+            color: var(--accent-gold);
+        }
+
+        /* =========================================================
+           7. LAYAR RINGKASAN & KONVERSI KONSULTASI (SUMMARY + MODAL)
+           ========================================================= */
+        .summary-wrapper {
+            max-width: 640px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .rank-pill {
+            display: inline-block;
+            padding: 5px 14px;
+            border-radius: 999px;
+            background: var(--accent-gold-soft);
+            border: 1px solid var(--border-gold);
+            color: #78350f;
+            font-size: 12px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .summary-score-box {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin: 16px 0;
+        }
+
+        .score-metric {
+            background: var(--surface-soft);
+            border: 1px solid var(--border-green);
+            border-radius: var(--radius-lg);
+            padding: 14px;
+        }
+
+        .score-metric span {
+            display: block;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-muted);
+        }
+
+        .score-metric strong {
+            font-size: 26px;
+            font-weight: 800;
+            color: var(--primary-green-dark);
+        }
+
+        .edu-summary-card {
+            background: #f8fafc;
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: 14px 16px;
+            text-align: left;
+            font-size: 13px;
+            color: var(--text-main);
+            margin-bottom: 16px;
+        }
+
+        /* Kartu Kontak Konsultasi Personal Coach Rizki */
+        .coach-contact-card {
+            background: linear-gradient(135deg, var(--primary-green-dark), #065f46);
+            color: #ffffff;
+            border-radius: var(--radius-xl);
+            padding: 20px;
+            border: 2px solid var(--accent-gold-bright);
+            text-align: left;
+            margin-bottom: 16px;
+            box-shadow: 0 12px 24px rgba(6, 78, 59, 0.25);
+        }
+
+        .coach-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .coach-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--accent-gold-bright);
+            color: var(--primary-green-dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 800;
+            flex-shrink: 0;
+        }
+
+        .coach-name {
+            font-size: 17px;
+            font-weight: 800;
+            color: #ffffff;
+        }
+
+        .coach-role {
+            font-size: 12px;
+            color: #fde68a;
+            font-weight: 700;
+        }
+
+        .contact-row {
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(253, 230, 138, 0.35);
+            border-radius: var(--radius-md);
+            padding: 10px 12px;
+            margin-bottom: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            font-size: 13px;
+        }
+
+        .btn-copy-small {
+            background: #ffffff;
+            color: var(--primary-green-dark);
+            border: none;
+            border-radius: 8px;
+            padding: 6px 10px;
+            font-size: 11px;
+            font-weight: 800;
+            cursor: pointer;
+        }
+
+        .btn-copy-small:hover {
+            background: #fef3c7;
+        }
+
+        .cta-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        .btn-cta-wa {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 13px 14px;
+            border-radius: var(--radius-md);
+            background: #22c55e;
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 800;
+            font-size: 13px;
+            border-bottom: 3px solid #15803d;
+            text-align: center;
+        }
+
+        .btn-cta-ig {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 13px 14px;
+            border-radius: var(--radius-md);
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            color: var(--primary-green-dark);
+            text-decoration: none;
+            font-weight: 800;
+            font-size: 13px;
+            border-bottom: 3px solid #b45309;
+            text-align: center;
+        }
+
+        /* Modal Overlay Info Konsultasi */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(6, 78, 59, 0.72);
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            z-index: 100;
+        }
+
+        .modal-card {
+            background: #ffffff;
+            border-radius: var(--radius-xl);
+            max-width: 520px;
+            width: 100%;
+            padding: 20px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 24px 48px rgba(0, 0, 0, 0.28);
+            border: 2px solid var(--border-gold);
+        }
+
+        .modal-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .btn-close-modal {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: none;
+            background: #f1f5f9;
+            font-weight: 800;
+            cursor: pointer;
+        }
+
+        /* =========================================================
+           8. FOOTER & RESPONSIVE BREAKPOINTS
+           ========================================================= */
+        .app-footer {
+            text-align: center;
+            padding: 12px 16px 18px 16px;
+            font-size: 12px;
+            color: var(--primary-green-dark);
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .play-arena {
+                grid-template-columns: 1fr;
+            }
+
+            .progress-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .round-preview-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .cta-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .plate-circle {
+                width: 220px;
+                height: 220px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- =========================================================
+         HEADER & IDENTITAS BRAND
+         ========================================================= -->
+    <header class="app-header">
+        <div class="brand-box">
+            <div class="brand-icon" aria-hidden="true">🥗</div>
+            <div>
+                <div class="brand-tagline">NC SoulSpace • Herbalife Nutrition Coach</div>
+                <h1 class="brand-title">NutriPlate <span>Challenge</span></h1>
+                <p class="brand-subtitle">Susun Piring Seimbang &amp; Dapatkan Energi Optimal</p>
+            </div>
+        </div>
+
+        <div class="header-actions">
+            <button type="button" id="btn-sound" class="btn-pill" onclick="toggleSound()" title="Suara Efek">
+                🔊 Suara: ON
+            </button>
+            <button type="button" class="btn-pill btn-pill-gold" onclick="openConsultModal()">
+                💬 Info Konsultasi
+            </button>
+        </div>
+    </header>
+
+    <!-- =========================================================
+         KONTAINER UTAMA APLIKASI
+         ========================================================= -->
+    <main class="main-container">
+
+        <!-- 1. LAYAR AWAL (START SCREEN) -->
+        <section id="screen-start" class="card-panel anim-pop">
+            <div class="hero-box">
+                <div class="hero-emoji" aria-hidden="true">🍽️</div>
+                <h2 class="hero-heading">Tantangan 3 Ronde Piring Seimbang</h2>
+                <p class="hero-desc">
+                    Pelajari cara memadukan makanan segar harian dan nutrisi praktis agar tubuh bertenaga, kenyang lebih lama, dan terhidrasi optimal sepanjang hari.
+                </p>
+
+                <div class="round-preview-grid">
+                    <div class="round-preview-item">
+                        <strong>🌅 Ronde 1: Sarapan Energi Stabil</strong>
+                        <span>Target: Protein tinggi, Serat/Karbo kompleks, dan Hidrasi.</span>
+                    </div>
+                    <div class="round-preview-item">
+                        <strong>☀️ Ronde 2: Makan Siang Seimbang</strong>
+                        <span>Target: Protein, Sayur/Serat, dan Lemak Baik.</span>
+                    </div>
+                    <div class="round-preview-item">
+                        <strong>⚡ Ronde 3: Nutrisi Praktis &amp; Pemulihan</strong>
+                        <span>Target: Herbalife Shake, Protein, dan Hidrasi.</span>
+                    </div>
+                </div>
+
+                <div class="coach-banner-mini">
+                    ✨ Semua kebutuhan nutrisi seimbang—baik dari makanan segar maupun opsi praktis harian—bisa didapatkan dengan mudah bersama <strong>Herbalife</strong>. Dipandu langsung oleh <strong>Coach Rizki</strong> (<code>@Riski.nutritioncoach</code>).
+                </div>
+
+                <button type="button" class="btn-primary-large" onclick="startGame()">
+                    🚀 Mulai Tantangan Sekarang
+                </button>
+            </div>
+        </section>
+
+        <!-- 2. LAYAR BERMAIN (GAMEPLAY SCREEN) -->
+        <section id="screen-game" class="hidden">
+            <!-- HUD Status -->
+            <div class="hud-bar">
+                <div class="hud-box">
+                    <div class="hud-label">Ronde Misi</div>
+                    <div class="hud-value" id="hud-round">1 / 3</div>
+                </div>
+                <div class="hud-box">
+                    <div class="hud-label">Total Skor</div>
+                    <div class="hud-value" id="hud-score">0</div>
+                </div>
+                <div class="hud-box">
+                    <div class="hud-label">Item di Piring</div>
+                    <div class="hud-value" id="hud-count">0 / 4</div>
+                </div>
+            </div>
+
+            <!-- Kartu Misi Aktif -->
+            <div class="mission-card">
+                <div>
+                    <span class="mission-badge" id="mission-badge">RONDE 1 DARI 3</span>
+                    <h2 class="mission-title" id="mission-title">Sarapan Energi Stabil</h2>
+                    <p class="mission-target" id="mission-target">Target: Protein tinggi, Serat/Karbo kompleks, dan Hidrasi.</p>
+                </div>
+            </div>
+
+            <!-- 4 Bar Progres Real-Time -->
+            <div class="progress-grid">
+                <div>
+                    <div class="prog-item-header">
+                        <span>🍗 Protein</span>
+                        <span id="val-protein">0%</span>
+                    </div>
+                    <div class="prog-track">
+                        <div id="bar-protein" class="prog-fill fill-protein"></div>
+                    </div>
+                </div>
+                <div>
+                    <div class="prog-item-header">
+                        <span>🥦 Serat &amp; Karbo</span>
+                        <span id="val-fiber">0%</span>
+                    </div>
+                    <div class="prog-track">
+                        <div id="bar-fiber" class="prog-fill fill-fiber"></div>
+                    </div>
+                </div>
+                <div>
+                    <div class="prog-item-header">
+                        <span>🥑 Lemak Baik</span>
+                        <span id="val-fat">0%</span>
+                    </div>
+                    <div class="prog-track">
+                        <div id="bar-fat" class="prog-fill fill-fat"></div>
+                    </div>
+                </div>
+                <div>
+                    <div class="prog-item-header">
+                        <span>💧 Hidrasi</span>
+                        <span id="val-hydration">0%</span>
+                    </div>
+                    <div class="prog-track">
+                        <div id="bar-hydration" class="prog-fill fill-hydration"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Arena Utama: Piring & Kartu Bahan -->
+            <div class="play-arena">
+                <!-- Piring Visual -->
+                <div class="plate-stage" id="plate-stage">
+                    <div class="plate-circle" aria-label="Piring Nutrisi 4 Slot">
+                        <div class="plate-slot" id="slot-0" onclick="removePlateItem(0)">
+                            <span class="slot-empty-text">Slot 1</span>
+                        </div>
+                        <div class="plate-slot" id="slot-1" onclick="removePlateItem(1)">
+                            <span class="slot-empty-text">Slot 2</span>
+                        </div>
+                        <div class="plate-slot" id="slot-2" onclick="removePlateItem(2)">
+                            <span class="slot-empty-text">Slot 3</span>
+                        </div>
+                        <div class="plate-slot" id="slot-3" onclick="removePlateItem(3)">
+                            <span class="slot-empty-text">Slot 4</span>
+                        </div>
+                    </div>
+
+                    <div class="feedback-box" id="feedback-box">
+                        💡 Tap kartu makanan/nutrisi di samping untuk mengisi piring (maksimal 4 item). Tap item di piring untuk menghapusnya.
+                    </div>
+
+                    <div class="plate-buttons">
+                        <button type="button" class="btn-reset" onclick="resetCurrentPlate()">
+                            🔄 Reset Piring
+                        </button>
+                        <button type="button" id="btn-serve" class="btn-serve" onclick="servePlate()" disabled>
+                            🍽️ Sajikan Piring (Pilih Min. 2 Item)
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Pilihan Bahan Makanan & Nutrisi -->
+                <div class="food-deck">
+                    <div class="deck-header">
+                        <span class="deck-title">Pilih Bahan Makanan &amp; Nutrisi</span>
+                        <span class="deck-hint">Tap untuk Tambah / Hapus</span>
+                    </div>
+                    <div class="food-grid" id="food-grid">
+                        <!-- Kartu dirender otomatis oleh JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. LAYAR RINGKASAN & KONVERSI KONSULTASI (END SCREEN) -->
+        <section id="screen-end" class="card-panel hidden anim-pop">
+            <div class="summary-wrapper">
+                <div class="rank-pill" id="summary-rank">🏆 SMART NUTRITION MASTER</div>
+                <h2 class="hero-heading">Selamat! 3 Ronde Piring Seimbang Selesai 🎉</h2>
+                <p class="hero-desc">
+                    Kamu telah menyelesaikan simulasi penyusunan gizi harian untuk energi stabil, pemulihan tubuh, dan hidrasi optimal.
+                </p>
+
+                <div class="summary-score-box">
+                    <div class="score-metric">
+                        <span>Total Skor Akhir</span>
+                        <strong id="final-score">0</strong>
+                    </div>
+                    <div class="score-metric">
+                        <span>Ronde Diselesaikan</span>
+                        <strong>3 / 3 Misi</strong>
+                    </div>
+                </div>
+
+                <div class="edu-summary-card">
+                    <strong>🌿 Kesimpulan Edukasi Nutrisi:</strong><br>
+                    Menjaga komposisi <strong>Protein, Serat &amp; Karbohidrat Kompleks, Lemak Baik, serta Hidrasi</strong> membantu mengontrol rasa lapar dan menjaga fokus sepanjang hari. Semua kebutuhan nutrisi seimbang—baik dari makanan segar maupun opsi praktis harian—bisa didapatkan dengan mudah bersama <strong>Herbalife</strong>.
+                </div>
+
+                <!-- Kartu Kontak Konsultasi Personal -->
+                <div class="coach-contact-card">
+                    <div class="coach-header">
+                        <div class="coach-avatar" aria-hidden="true">👨‍⚕️</div>
+                        <div>
+                            <div class="coach-name">Coach Rizki</div>
+                            <div class="coach-role">NC SoulSpace • Herbalife Nutrition Coach</div>
+                        </div>
+                    </div>
+
+                    <div class="contact-row">
+                        <div>
+                            📞 WhatsApp: <strong>085198218609</strong>
+                        </div>
+                        <button type="button" class="btn-copy-small" id="btn-copy-end" onclick="copyPhoneNumber('btn-copy-end')">
+                            📋 Salin Nomor
+                        </button>
+                    </div>
+
+                    <div class="contact-row">
+                        <div>
+                            📸 Instagram: <strong>@Riski.nutritioncoach</strong>
+                        </div>
+                        <span style="font-size: 11px; color: #fde68a; font-weight: 700;">Konsultasi Gratis</span>
+                    </div>
+
+                    <div class="cta-grid">
+                        <a href="https://wa.me/6285198218609?text=Halo%20Rizki%2C%20saya%20baru%20main%20NutriPlate%20Challenge%20dan%20mau%20konsultasi%20nutrisi"
+                           target="_blank"
+                           rel="noopener noreferrer"
+                           class="btn-cta-wa">
+                            💬 Chat WhatsApp (085198218609)
+                        </a>
+                        <a href="https://instagram.com/Riski.nutritioncoach"
+                           target="_blank"
+                           rel="noopener noreferrer"
+                           class="btn-cta-ig">
+                            📸 Kunjungi @Riski.nutritioncoach
+                        </a>
+                    </div>
+                </div>
+
+                <button type="button" class="btn-primary-large" onclick="startGame()">
+                    🔄 Main Lagi dari Awal
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- =========================================================
+         FOOTER
+         ========================================================= -->
+    <footer class="app-footer">
+        NC SoulSpace • Herbalife Nutrition Coach — Coach Rizki (085198218609) | IG: @Riski.nutritioncoach
+    </footer>
+
+    <!-- =========================================================
+         MODAL INFO KONSULTASI (DAPAT DIBUKA KAPAN SAJA)
+         ========================================================= -->
+    <div id="modal-consult" class="modal-overlay hidden" onclick="handleModalBackdrop(event)">
+        <div class="modal-card anim-pop">
+            <div class="modal-top">
+                <strong style="font-size: 16px; color: var(--primary-green-dark);">🌿 Konsultasi Nutrisi Personal</strong>
+                <button type="button" class="btn-close-modal" onclick="closeConsultModal()" aria-label="Tutup">✕</button>
+            </div>
+
+            <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 14px;">
+                Ingin menyusun pola makan harian, sarapan sehat praktis, atau program pengelolaan berat badan yang sesuai dengan aktivitasmu? Semua kebutuhan nutrisi seimbang—baik dari makanan segar maupun opsi praktis harian—bisa didapatkan bersama <strong>Herbalife</strong>.
+            </p>
+
+            <div class="coach-contact-card" style="margin-bottom: 12px;">
+                <div class="coach-header">
+                    <div class="coach-avatar" aria-hidden="true">👨‍⚕️</div>
+                    <div>
+                        <div class="coach-name">Coach Rizki</div>
+                        <div class="coach-role">NC SoulSpace • Herbalife Nutrition Coach</div>
+                    </div>
+                </div>
+
+                <div class="contact-row">
+                    <div>📞 WhatsApp: <strong>085198218609</strong></div>
+                    <button type="button" class="btn-copy-small" id="btn-copy-modal" onclick="copyPhoneNumber('btn-copy-modal')">
+                        📋 Salin Nomor
+                    </button>
+                </div>
+
+                <div class="contact-row">
+                    <div>📸 Instagram: <strong>@Riski.nutritioncoach</strong></div>
+                </div>
+
+                <div class="cta-grid">
+                    <a href="https://wa.me/6285198218609?text=Halo%20Rizki%2C%20saya%20baru%20main%20NutriPlate%20Challenge%20dan%20mau%20konsultasi%20nutrisi"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       class="btn-cta-wa">
+                        💬 Chat WhatsApp Rizki
+                    </a>
+                    <a href="https://instagram.com/Riski.nutritioncoach"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       class="btn-cta-ig">
+                        📸 Buka IG @Riski.nutritioncoach
+                    </a>
+                </div>
+            </div>
+
+            <button type="button" class="btn-reset" style="width: 100%;" onclick="closeConsultModal()">
+                Kembali ke Permainan
+            </button>
+        </div>
+    </div>
+
+    <!-- =========================================================
+         JAVASCRIPT LOGIKA PERMAINAN & AUDIO AMAN
+         ========================================================= -->
+    <script>
+        "use strict";
+
+        // 1. DATA 10 ITEM MAKANAN & NUTRISI PRAKTIS
+        const FOOD_ITEMS = [
+            {
+                id: "ayam",
+                name: "Dada Ayam Panggang",
+                emoji: "🍗",
+                tag: "Protein Tinggi",
+                isHerbalife: false,
+                stats: { protein: 45, fiber: 0, fat: 10, hydration: 0 },
+                tip: "Dada ayam panggang kaya protein rendah lemak untuk menjaga massa otot dan rasa kenyang."
+            },
+            {
+                id: "telur",
+                name: "Telur Rebus",
+                emoji: "🥚",
+                tag: "Protein Lengkap",
+                isHerbalife: false,
+                stats: { protein: 35, fiber: 0, fat: 15, hydration: 0 },
+                tip: "Telur rebus menyediakan asam amino esensial yang mudah diserap tubuh."
+            },
+            {
+                id: "tahu_tempe",
+                name: "Tahu & Tempe",
+                emoji: "🍱",
+                tag: "Protein & Serat Nabati",
+                isHerbalife: false,
+                stats: { protein: 30, fiber: 20, fat: 10, hydration: 0 },
+                tip: "Tahu & tempe adalah sumber protein nabati yang ramah pencernaan."
+            },
+            {
+                id: "oatmeal",
+                name: "Oatmeal & Buah",
+                emoji: "🥣",
+                tag: "Serat & Karbo Kompleks",
+                isHerbalife: false,
+                stats: { protein: 10, fiber: 45, fat: 5, hydration: 5 },
+                tip: "Oatmeal dan buah segar melepas energi secara bertahap agar gula darah stabil."
+            },
+            {
+                id: "nasi_sayur",
+                name: "Nasi Merah & Sayur",
+                emoji: "🥗",
+                tag: "Karbo Kompleks & Serat",
+                isHerbalife: false,
+                stats: { protein: 10, fiber: 50, fat: 0, hydration: 10 },
+                tip: "Kombinasi nasi merah dan sayuran kaya vitamin, mineral, dan serat harian."
+            },
+            {
+                id: "alpukat_kacang",
+                name: "Alpukat & Kacang",
+                emoji: "🥑",
+                tag: "Lemak Baik & Serat",
+                isHerbalife: false,
+                stats: { protein: 10, fiber: 20, fat: 55, hydration: 0 },
+                tip: "Lemak tak jenuh dari alpukat & kacang mendukung fokus otak dan kesehatan jantung."
+            },
+            {
+                id: "air_putih",
+                name: "Air Putih 500ml",
+                emoji: "💧",
+                tag: "Hidrasi Optimal",
+                isHerbalife: false,
+                stats: { protein: 0, fiber: 0, fat: 0, hydration: 55 },
+                tip: "Hidrasi cukup membantu metabolisme tubuh dan mencegah rasa lelah."
+            },
+            {
+                id: "herbalife_f1",
+                name: "Herbalife Formula 1 Shake",
+                emoji: "🥤",
+                tag: "Nutrisi Praktis Lengkap",
+                isHerbalife: true,
+                stats: { protein: 40, fiber: 35, fat: 15, hydration: 25 },
+                tip: "Herbalife Formula 1 Shake: nutrisi seimbang praktis dengan protein, serat, vitamin & mineral!"
+            },
+            {
+                id: "herbalife_ppp",
+                name: "Herbalife PPP / Protein Powder",
+                emoji: "🥛",
+                tag: "Ekstra Protein Praktis",
+                isHerbalife: true,
+                stats: { protein: 50, fiber: 0, fat: 0, hydration: 10 },
+                tip: "Herbalife PPP membantu mencukupi target protein harian tanpa tambahan gula berlebih."
+            },
+            {
+                id: "herbalife_aloe_tea",
+                name: "Herbalife Herbal Aloe / Tea",
+                emoji: "🍵",
+                tag: "Hidrasi & Kesegaran",
+                isHerbalife: true,
+                stats: { protein: 0, fiber: 10, fat: 0, hydration: 60 },
+                tip: "Herbal Aloe & Tea Concentrate menyegarkan pencernaan dan mendukung hidrasi aktif."
+            }
+        ];
+
+        // 2. DATA 3 RONDE MISI
+        const ROUNDS = [
+            {
+                number: 1,
+                title: "Sarapan Energi Stabil",
+                targetText: "Target: Protein tinggi, Serat/Karbo kompleks, dan Hidrasi.",
+                checkBonus: (totals, items) => {
+                    let bonus = 0;
+                    if (totals.protein >= 40) bonus += 60;
+                    if (totals.fiber >= 35) bonus += 60;
+                    if (totals.hydration >= 25) bonus += 60;
+                    return bonus;
+                }
+            },
+            {
+                number: 2,
+                title: "Makan Siang Seimbang",
+                targetText: "Target: Protein, Sayur/Serat, dan Lemak Baik.",
+                checkBonus: (totals, items) => {
+                    let bonus = 0;
+                    if (totals.protein >= 35) bonus += 60;
+                    if (totals.fiber >= 40) bonus += 60;
+                    if (totals.fat >= 40) bonus += 60;
+                    return bonus;
+                }
+            },
+            {
+                number: 3,
+                title: "Nutrisi Praktis & Pemulihan Harian",
+                targetText: "Target: Nutrisi Praktis (Herbalife Shake), Protein, dan Hidrasi.",
+                checkBonus: (totals, items) => {
+                    let bonus = 0;
+                    const hasHerbalife = items.some(it => it.isHerbalife);
+                    if (hasHerbalife) bonus += 80;
+                    if (totals.protein >= 45) bonus += 50;
+                    if (totals.hydration >= 40) bonus += 50;
+                    return bonus;
+                }
+            }
+        ];
+
+        // 3. STATE APLIKASI
+        let currentRoundIndex = 0;
+        let totalScore = 0;
+        let selectedPlateItems = [];
+        let soundEnabled = true;
+        let audioContext = null;
+
+        // 4. WEB AUDIO API YANG AMAN (DIBUNGKUS TRY-CATCH)
+        function playSoundEffect(type) {
+            if (!soundEnabled) return;
+            try {
+                const AudioCtx = window.AudioContext || window.webkitAudioContext;
+                if (!AudioCtx) return;
+
+                if (!audioContext) {
+                    audioContext = new AudioCtx();
+                }
+                if (audioContext.state === "suspended") {
+                    audioContext.resume();
+                }
+
+                const now = audioContext.currentTime;
+                const osc = audioContext.createOscillator();
+                const gain = audioContext.createGain();
+                osc.connect(gain);
+                gain.connect(audioContext.destination);
+
+                if (type === "add") {
+                    osc.type = "sine";
+                    osc.frequency.setValueAtTime(520, now);
+                    osc.frequency.exponentialRampToValueAtTime(780, now + 0.1);
+                    gain.gain.setValueAtTime(0.12, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.11);
+                    osc.start(now);
+                    osc.stop(now + 0.11);
+                } else if (type === "remove") {
+                    osc.type = "sine";
+                    osc.frequency.setValueAtTime(420, now);
+                    osc.frequency.exponentialRampToValueAtTime(260, now + 0.09);
+                    gain.gain.setValueAtTime(0.1, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
+                    osc.start(now);
+                    osc.stop(now + 0.1);
+                } else if (type === "warn") {
+                    osc.type = "triangle";
+                    osc.frequency.setValueAtTime(190, now);
+                    gain.gain.setValueAtTime(0.12, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.16);
+                    osc.start(now);
+                    osc.stop(now + 0.16);
+                } else if (type === "success") {
+                    const notes = [523.25, 659.25, 783.99, 1046.5];
+                    notes.forEach((freq, idx) => {
+                        const o = audioContext.createOscillator();
+                        const g = audioContext.createGain();
+                        o.type = "triangle";
+                        o.frequency.setValueAtTime(freq, now + idx * 0.06);
+                        g.gain.setValueAtTime(0.12, now + idx * 0.06);
+                        g.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.06 + 0.18);
+                        o.connect(g);
+                        g.connect(audioContext.destination);
+                        o.start(now + idx * 0.06);
+                        o.stop(now + idx * 0.06 + 0.18);
+                    });
+                }
+            } catch (err) {
+                // Abaikan error audio agar aplikasi tetap berjalan lancar
+            }
+        }
+
+        function toggleSound() {
+            soundEnabled = !soundEnabled;
+            const btn = document.getElementById("btn-sound");
+            if (btn) {
+                btn.textContent = soundEnabled ? "🔊 Suara: ON" : "🔇 Suara: OFF";
+            }
+        }
+
+        // 5. KONTROL LAYAR & MODAL
+        function showScreen(screenId) {
+            document.getElementById("screen-start").classList.add("hidden");
+            document.getElementById("screen-game").classList.add("hidden");
+            document.getElementById("screen-end").classList.add("hidden");
+            document.getElementById(screenId).classList.remove("hidden");
+        }
+
+        function openConsultModal() {
+            document.getElementById("modal-consult").classList.remove("hidden");
+        }
+
+        function closeConsultModal() {
+            document.getElementById("modal-consult").classList.add("hidden");
+        }
+
+        function handleModalBackdrop(event) {
+            if (event.target && event.target.id === "modal-consult") {
+                closeConsultModal();
+            }
+        }
+
+        function copyPhoneNumber(buttonId) {
+            const phone = "085198218609";
+            try {
+                const temp = document.createElement("textarea");
+                temp.value = phone;
+                temp.style.position = "fixed";
+                temp.style.opacity = "0";
+                document.body.appendChild(temp);
+                temp.select();
+                document.execCommand("copy");
+                document.body.removeChild(temp);
+            } catch (e) {
+                // Fallback jika copy gagal
+            }
+
+            const btn = document.getElementById(buttonId);
+            if (btn) {
+                const prevText = btn.textContent;
+                btn.textContent = "✅ Nomor Tersalin!";
+                setTimeout(() => {
+                    btn.textContent = prevText;
+                }, 2200);
+            }
+        }
+
+        // 6. ALUR UTAMA GAME
+        function startGame() {
+            currentRoundIndex = 0;
+            totalScore = 0;
+            selectedPlateItems = [];
+            showScreen("screen-game");
+            loadRound(currentRoundIndex);
+        }
+
+        function loadRound(index) {
+            selectedPlateItems = [];
+            const roundData = ROUNDS[index];
+
+            document.getElementById("hud-round").textContent = `${roundData.number} / ${ROUNDS.length}`;
+            document.getElementById("hud-score").textContent = totalScore;
+            document.getElementById("mission-badge").textContent = `RONDE ${roundData.number} DARI ${ROUNDS.length}`;
+            document.getElementById("mission-title").textContent = roundData.title;
+            document.getElementById("mission-target").textContent = roundData.targetText;
+
+            setFeedback("💡 Tap kartu makanan/nutrisi di samping untuk mengisi piring (maksimal 4 item).");
+            renderFoodDeck();
+            updatePlateAndBars();
+        }
+
+        function renderFoodDeck() {
+            const grid = document.getElementById("food-grid");
+            grid.innerHTML = "";
+
+            FOOD_ITEMS.forEach(item => {
+                const isSelected = selectedPlateItems.some(sel => sel.id === item.id);
+                const btn = document.createElement("button");
+                btn.type = "button";
+                btn.className = "food-card" +
+                    (item.isHerbalife ? " herbalife-card" : "") +
+                    (isSelected ? " selected" : "");
+                btn.onclick = () => toggleFoodItem(item.id);
+
+                btn.innerHTML = `
+                    <span class="food-emoji" aria-hidden="true">${item.emoji}</span>
+                    <div>
+                        <div class="food-info-title">${item.name}</div>
+                        <div class="food-info-tag">${isSelected ? "✓ Di Piring (Tap Hapus)" : item.tag}</div>
+                    </div>
+                `;
+                grid.appendChild(btn);
+            });
+        }
+
+        function toggleFoodItem(itemId) {
+            const existingIdx = selectedPlateItems.findIndex(it => it.id === itemId);
+
+            // Jika sudah ada di piring, hapus item tersebut
+            if (existingIdx !== -1) {
+                const removed = selectedPlateItems.splice(existingIdx, 1)[0];
+                playSoundEffect("remove");
+                setFeedback(`↩️ ${removed.name} dihapus dari piring.`);
+                renderFoodDeck();
+                updatePlateAndBars();
+                return;
+            }
+
+            // Cek batas maksimal 4 item per piring
+            if (selectedPlateItems.length >= 4) {
+                playSoundEffect("warn");
+                const stage = document.getElementById("plate-stage");
+                stage.classList.remove("anim-shake");
+                void stage.offsetWidth;
+                stage.classList.add("anim-shake");
+                setFeedback("⚠️ Piring sudah penuh (maksimal 4 item). Tap item di piring jika ingin menggantinya.");
+                return;
+            }
+
+            const itemObj = FOOD_ITEMS.find(it => it.id === itemId);
+            if (!itemObj) return;
+
+            selectedPlateItems.push(itemObj);
+            playSoundEffect("add");
+            setFeedback(`${itemObj.emoji} ${itemObj.tip}`);
+            renderFoodDeck();
+            updatePlateAndBars();
+        }
+
+        function removePlateItem(slotIndex) {
+            if (slotIndex < 0 || slotIndex >= selectedPlateItems.length) return;
+            const removed = selectedPlateItems.splice(slotIndex, 1)[0];
+            playSoundEffect("remove");
+            setFeedback(`↩️ ${removed.name} dihapus dari piring.`);
+            renderFoodDeck();
+            updatePlateAndBars();
+        }
+
+        function resetCurrentPlate() {
+            if (selectedPlateItems.length === 0) return;
+            selectedPlateItems = [];
+            playSoundEffect("remove");
+            setFeedback("🔄 Piring dikosongkan. Silakan pilih kombinasi nutrisi terbaikmu!");
+            renderFoodDeck();
+            updatePlateAndBars();
+        }
+
+        function calculateNutritionTotals() {
+            const totals = { protein: 0, fiber: 0, fat: 0, hydration: 0 };
+            selectedPlateItems.forEach(item => {
+                totals.protein = Math.min(100, totals.protein + item.stats.protein);
+                totals.fiber = Math.min(100, totals.fiber + item.stats.fiber);
+                totals.fat = Math.min(100, totals.fat + item.stats.fat);
+                totals.hydration = Math.min(100, totals.hydration + item.stats.hydration);
+            });
+            return totals;
+        }
+
+        function updatePlateAndBars() {
+            // Render 4 slot piring
+            for (let i = 0; i < 4; i++) {
+                const slotEl = document.getElementById(`slot-${i}`);
+                const item = selectedPlateItems[i];
+                if (item) {
+                    slotEl.className = "plate-slot filled anim-pop";
+                    slotEl.innerHTML = `
+                        <span class="slot-emoji">${item.emoji}</span>
+                        <span class="slot-name">${item.name}</span>
+                    `;
+                } else {
+                    slotEl.className = "plate-slot";
+                    slotEl.innerHTML = `<span class="slot-empty-text">Slot ${i + 1}</span>`;
+                }
+            }
+
+            // Update counter & skor HUD
+            document.getElementById("hud-count").textContent = `${selectedPlateItems.length} / 4`;
+            document.getElementById("hud-score").textContent = totalScore;
+
+            // Update 4 bar progres real-time
+            const totals = calculateNutritionTotals();
+            document.getElementById("val-protein").textContent = `${totals.protein}%`;
+            document.getElementById("bar-protein").style.width = `${totals.protein}%`;
+
+            document.getElementById("val-fiber").textContent = `${totals.fiber}%`;
+            document.getElementById("bar-fiber").style.width = `${totals.fiber}%`;
+
+            document.getElementById("val-fat").textContent = `${totals.fat}%`;
+            document.getElementById("bar-fat").style.width = `${totals.fat}%`;
+
+            document.getElementById("val-hydration").textContent = `${totals.hydration}%`;
+            document.getElementById("bar-hydration").style.width = `${totals.hydration}%`;
+
+            // Update tombol Sajikan Piring
+            const btnServe = document.getElementById("btn-serve");
+            if (selectedPlateItems.length >= 2) {
+                btnServe.disabled = false;
+                btnServe.textContent = `✨ Sajikan Piring (${selectedPlateItems.length}/4 Item)`;
+            } else {
+                btnServe.disabled = true;
+                btnServe.textContent = `🍽️ Sajikan Piring (Pilih Min. 2 Item)`;
+            }
+        }
+
+        function setFeedback(message) {
+            const box = document.getElementById("feedback-box");
+            if (box) {
+                box.textContent = message;
+            }
+        }
+
+        function servePlate() {
+            if (selectedPlateItems.length < 2) return;
+
+            const roundData = ROUNDS[currentRoundIndex];
+            const totals = calculateNutritionTotals();
+
+            // Hitung skor ronde: poin dasar nutrisi + bonus target misi
+            const basePoints = Math.round((totals.protein + totals.fiber + totals.fat + totals.hydration) * 0.8);
+            const missionBonus = roundData.checkBonus(totals, selectedPlateItems);
+            const roundTotal = basePoints + missionBonus;
+
+            totalScore += roundTotal;
+            playSoundEffect("success");
+
+            // Lanjut ke ronde berikutnya atau tampilkan layar ringkasan
+            if (currentRoundIndex + 1 < ROUNDS.length) {
+                currentRoundIndex++;
+                loadRound(currentRoundIndex);
+                setFeedback(`🎉 Ronde ${roundData.number} berhasil (+${roundTotal} poin)! Lanjut ke Ronde ${currentRoundIndex + 1}: ${ROUNDS[currentRoundIndex].title}.`);
+            } else {
+                showSummaryScreen();
+            }
+        }
+
+        function showSummaryScreen() {
+            document.getElementById("final-score").textContent = totalScore;
+
+            const rankEl = document.getElementById("summary-rank");
+            if (totalScore >= 850) {
+                rankEl.textContent = "👑 GRAND MASTER NUTRISI SEIMBANG";
+            } else if (totalScore >= 600) {
+                rankEl.textContent = "🏆 SMART NUTRITION CHAMPION";
+            } else {
+                rankEl.textContent = "🌿 PEJUANG POLA HIDUP SEHAT";
+            }
+
+            showScreen("screen-end");
+        }
+    </script>
+</body>
+</html>
+```
